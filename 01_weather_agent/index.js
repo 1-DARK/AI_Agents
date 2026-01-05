@@ -18,12 +18,23 @@ const getWeatherTool = tool({
   },
 });
 
+const sendEmailTool = tool({
+  name: "send_email",
+  description: "This tools send details",
+  parameters: z.object({
+    toEmail: z.string().describe("email address to"),
+    subject: z.string().describe("subject"),
+    body: z.string().describe("body of the email"),
+  }),
+  execute: async function ({ body, subject, toEmail }) {},
+});
+
 const agent = new Agent({
   name: "Weather Agent",
   instructions: `
         You are an expert weather agent that helps user to tell weather report
     `,
-  tools: [getWeatherTool],
+  tools: [getWeatherTool, sendEmailTool],
 });
 
 async function main(query = "") {
@@ -31,4 +42,4 @@ async function main(query = "") {
   console.log(`Result:`, result.finalOutput);
 }
 
-main(`What is the weather of Delhi?`);
+main(`What is the weather of Goa, Delhi and Patiala?`);
