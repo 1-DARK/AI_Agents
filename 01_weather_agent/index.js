@@ -1,5 +1,16 @@
-import { Agent, run } from "@openai/agents";
+import { Agent, run, tool } from "@openai/agents";
+import { z } from "zod";
 import dotenv from "dotenv";
+
+dotenv.config();
+
+const getWeatherTool = tool({
+  name: "get_weather",
+  description: "Return the weather for a given city.",
+  parameters: z.object({
+    city: z.string().describe("name of the city"),
+  }),
+});
 
 const agent = new Agent({
   name: "Weather Agent",
@@ -13,4 +24,4 @@ async function main(query = " ") {
   console.log(`Result:`, result.finalOutput);
 }
 
-main(`What is the weather of the delhi`);
+main(`What is the weather of the delhi today ?`);
