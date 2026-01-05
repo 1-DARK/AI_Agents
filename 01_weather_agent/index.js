@@ -10,6 +10,9 @@ const getWeatherTool = tool({
   parameters: z.object({
     city: z.string().describe("name of the city"),
   }),
+  execute: async function ({ city }) {
+    return `The weather of ${city} is 12 with some wind`;
+  },
 });
 
 const agent = new Agent({
@@ -17,6 +20,7 @@ const agent = new Agent({
   instructions: `
         You are an expert weather agent that helps user to tell weather report
     `,
+  tools: [getWeatherTool],
 });
 
 async function main(query = " ") {
