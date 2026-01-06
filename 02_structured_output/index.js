@@ -5,6 +5,12 @@ import axios from "axios";
 
 dotenv.config();
 
+const GetWeatherResultSchema = z.object({
+  city: z.string().describe("name of the city"),
+  degree_c: z.number().describe("degree Celsius of the temp"),
+  condition: z.string().optional().describe("condition of the weather"),
+});
+
 const getWeatherTool = tool({
   name: "get_weather",
   description: "returns the current weather information for the given city",
@@ -21,9 +27,10 @@ const getWeatherTool = tool({
 const agent = new Agent({
   name: "Weather Agent",
   instructions: `
-        You are an expert weather agent that helps user to tell weather report and give only temperature.
+        You are an expert weather agent that helps user to tell weather report.
     `,
   tools: [getWeatherTool],
+  outputType: GetWeatherResultSchema,
 });
 
 async function main(query = "") {
@@ -31,4 +38,4 @@ async function main(query = "") {
   console.log(`Result:`, result.finalOutput);
 }
 
-main(`What is the weather of Goa, Delhi and Patiala?`);
+main(`What is the weather of Bijnor?`);

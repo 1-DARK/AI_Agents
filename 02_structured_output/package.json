@@ -7,10 +7,12 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@openai/agents": "^0.3.7",
+    "axios": "^1.13.2",
     "dotenv": "^17.2.3",
     "zod": "^3.25.76"
   }
