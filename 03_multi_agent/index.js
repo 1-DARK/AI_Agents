@@ -8,10 +8,18 @@ const fetchAvailablePlans = tool({
   name: "fetch_available",
   description: "fetches the available plans for the internet",
   parameters: undefined,
+  execute: async function () {
+    return [
+      { plan_id: "1", price_inr: 399, speed: "30MB/s" },
+      { plan_id: "2", price_inr: 999, speed: "100MB/s" },
+      { plan_id: "3", price_inr: 1499, speed: "200MB/s" },
+    ];
+  },
 });
 
 const salesAgent = new Agent({
   name: "Sales Agent ",
   instructions: `You are an expert sales agent for an internet broadband company.
     Talk to the user and help them with what they need.`,
+  tools: [fetchAvailablePlans],
 });
