@@ -17,6 +17,27 @@ const fetchAvailablePlans = tool({
   },
 });
 
+const processRefund = tool({
+  name: "process_refund",
+  description: "This tool processes the refund for a customer ",
+  parameters: z.object({
+    customer_id: z.string().describe("id of the customer"),
+  }),
+  execute: async function () {
+    return [
+      { plan_id: "1", price_inr: 399, speed: "30MB/s" },
+      { plan_id: "2", price_inr: 999, speed: "100MB/s" },
+      { plan_id: "3", price_inr: 1499, speed: "200MB/s" },
+    ];
+  },
+});
+
+const refundAgent = new Agent({
+  name: "Refund Agent",
+  instructions: `You are expert in issuing refunds to the customer`,
+  tools: [processRefund],
+});
+
 const salesAgent = new Agent({
   name: "Sales Agent ",
   instructions: `You are an expert sales agent for an internet broadband company.
@@ -29,4 +50,6 @@ async function runAgent(query = "") {
   console.log(result.finalOutput);
 }
 
-runAgent(`Hi there,I want to know about your available plans?`);
+runAgent(
+  `Hi there,I had a plan of 399 and I want to refund that plan and my customerid is cust67 ?`
+);
