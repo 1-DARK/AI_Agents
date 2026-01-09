@@ -1,4 +1,4 @@
-import { Agent, tool } from "@openai/agents";
+import { Agent, tool, run } from "@openai/agents";
 import { z } from "zod";
 import dotenv from "dotenv";
 
@@ -7,7 +7,7 @@ dotenv.config();
 const fetchAvailablePlans = tool({
   name: "fetch_available",
   description: "fetches the available plans for the internet",
-  parameters: undefined,
+  parameters: z.object({}),
   execute: async function () {
     return [
       { plan_id: "1", price_inr: 399, speed: "30MB/s" },
@@ -23,3 +23,10 @@ const salesAgent = new Agent({
     Talk to the user and help them with what they need.`,
   tools: [fetchAvailablePlans],
 });
+
+async function runAgent(query = "") {
+  const result = await run(salesAgent, query);
+  console.log(result.finalOutput);
+}
+
+runAgent(`Hi there,I want to know about your available plans?`);
