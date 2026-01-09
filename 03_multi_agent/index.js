@@ -45,7 +45,13 @@ const salesAgent = new Agent({
   name: "Sales Agent ",
   instructions: `You are an expert sales agent for an internet broadband company.
     Talk to the user and help them with what they need.`,
-  tools: [fetchAvailablePlans],
+  tools: [
+    fetchAvailablePlans,
+    refundAgent.asTool({
+      toolName: "refund_expert",
+      toolDescription: "Handles refund questions and requests",
+    }),
+  ],
 });
 
 async function runAgent(query = "") {
@@ -54,5 +60,5 @@ async function runAgent(query = "") {
 }
 
 runAgent(
-  `Hi there,I had a plan of 399 and I want to refund that plan and my customerid is cust67 ?`
+  `I had a plan of 399 and I want to refund that plan and my customerid is cust67 and the issue is i have already the plan?`
 );
