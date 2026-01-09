@@ -1,4 +1,5 @@
 import { Agent, tool, run } from "@openai/agents";
+import fs from "node:fs/promises";
 import { z } from "zod";
 import dotenv from "dotenv";
 
@@ -22,13 +23,15 @@ const processRefund = tool({
   description: "This tool processes the refund for a customer ",
   parameters: z.object({
     customer_id: z.string().describe("id of the customer"),
+    reason: z.string().describe("reason for refund"),
   }),
-  execute: async function () {
-    return [
-      { plan_id: "1", price_inr: 399, speed: "30MB/s" },
-      { plan_id: "2", price_inr: 999, speed: "100MB/s" },
-      { plan_id: "3", price_inr: 1499, speed: "200MB/s" },
-    ];
+  execute: async function ({ customer_id, reason }) {
+    await fs.appendFile(
+      "./refunds.txt",
+      `Refund for customer having ID ${customer_id} for ${reason}`,
+      "utf-8"
+    );
+    return { refundIssued: true };
   },
 });
 
